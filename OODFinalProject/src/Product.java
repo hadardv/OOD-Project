@@ -1,18 +1,28 @@
 import java.util.LinkedHashSet;
 
 public abstract class Product {
+	public static int cnt=0;
+	protected int ID;
 	protected String product_name;
 	protected int cost_price;
 	protected int selling_price;
 	protected int stock;
+	protected int weight;
 	protected LinkedHashSet<Order> ordersList;
-	public Product(String product_name, int cost_price, int selling_price, int stock, LinkedHashSet<Order> hs) {
-	
+	public Product(String product_name, int cost_price, int selling_price, int stock,int weight, LinkedHashSet<Order> ordersList) {
+		this.ID=++cnt;
 		this.product_name = product_name;
 		this.cost_price = cost_price;
 		this.selling_price = selling_price;
 		this.stock = stock;
 		this.ordersList = ordersList;
+		this.weight=weight;
+	}
+	public int getWeight() {
+		return weight;
+	}
+	public void setWeight(int weight) {
+		this.weight = weight;
 	}
 	public String getProduct_name() {
 		return product_name;

@@ -4,13 +4,13 @@ public class SoldThroughWebsite extends Product {
 	private static final int dollarEx=4;
 	private int priceDollar;
 	private String destCountry;
-	private Shipments shipping;
+	private String priceWithSymbol;
 	public SoldThroughWebsite(String product_name, int cost_price, int selling_price, int stock,
-			LinkedHashSet<Order> hs, int priceDollar, String destCountry, Shipments shipping) {
-		super(product_name, cost_price, selling_price, stock, hs);
-		this.priceDollar = priceDollar;
+			LinkedHashSet<Order> hs, int weight, String destCountry) {
+		super(product_name, cost_price, selling_price, stock, weight, hs);
+		this.priceDollar = selling_price/dollarEx;
 		this.destCountry = destCountry;
-		this.shipping = shipping;
+		priceWithSymbol="$"+priceDollar;
 	}
 	public int getPriceDollar() {
 		return priceDollar;
@@ -23,12 +23,6 @@ public class SoldThroughWebsite extends Product {
 	}
 	public void setDestCountry(String destCountry) {
 		this.destCountry = destCountry;
-	}
-	public Shipments getShipping() {
-		return shipping;
-	}
-	public void setShipping(Shipments shipping) {
-		this.shipping = shipping;
 	}
 	public static int getDollarex() {
 		return dollarEx;

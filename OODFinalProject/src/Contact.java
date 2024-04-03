@@ -2,12 +2,10 @@
 public class Contact {
 	private String name;
 	private String whatsappNum;
-	private ShippingCompany company;
-	public Contact(String name, String whatsappNum, ShippingCompany company) {
+	public Contact(String name, String whatsappNum) {
 		super();
 		this.name = name;
 		this.whatsappNum = whatsappNum;
-		this.company = company;
 	}
 	public String getName() {
 		return name;
@@ -20,12 +18,6 @@ public class Contact {
 	}
 	public void setWhatsappNum(String whatsappNum) {
 		this.whatsappNum = whatsappNum;
-	}
-	public ShippingCompany getCompany() {
-		return company;
-	}
-	public void setCompany(ShippingCompany company) {
-		this.company = company;
 	}
 	
 }

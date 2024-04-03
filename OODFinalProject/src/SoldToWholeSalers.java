@@ -2,9 +2,9 @@ import java.util.LinkedHashSet;
 
 public class SoldToWholeSalers extends Product implements FormatForAccountant {
 
-	public SoldToWholeSalers(String product_name, int cost_price, int selling_price, int stock,
+	public SoldToWholeSalers(String product_name, int cost_price, int selling_price, int stock,int weight,
 			LinkedHashSet<Order> hs) {
-		super(product_name, cost_price, selling_price, stock, hs);
+		super(product_name, cost_price, selling_price, stock,weight,hs);
 		// TODO Auto-generated constructor stub
 	}
 	public void printForAccountant(Order o) {

@@ -1,15 +1,9 @@
 import java.util.LinkedHashSet;
 
 public class SoldInStore extends Product implements FormatForAccountant,FormatForCustomer{
-	private enum eType{
-		fromatForCustomer,
-		fomatForAccountant,
-	}
-	private eType recieptType;
-	public SoldInStore(String product_name, int cost_price, int selling_price, int stock, LinkedHashSet<Order> hs,
-			SoldInStore.eType recieptType) {
-		super(product_name, cost_price, selling_price, stock, hs);
-		this.recieptType = recieptType;
+
+	public SoldInStore(String product_name, int cost_price, int selling_price, int stock,int weight, LinkedHashSet<Order> ordersList) {
+		super(product_name, cost_price, selling_price, stock, weight, ordersList);
 	}
 	
 	public void printForCustomer(Order o) {
