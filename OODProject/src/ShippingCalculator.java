@@ -7,7 +7,7 @@ public class ShippingCalculator {
         double fedExCost = calcFedExShipping(order, shippingType);
  
         // Assuming ShippingOption is a class that holds the shipping company name and cost
-        return dhlCost < fedExCost ? new ShippingOption("DHL", dhlCost,shippingType) : new ShippingOption("FedEx", fedExCost,shippingType);
+        return dhlCost < fedExCost ? new ShippingOption(new ShippingCompany("DHL",Main.DHL_CONTACT), dhlCost,shippingType) : new ShippingOption(new ShippingCompany("FedEx",Main.FEDEX_CONTACT), fedExCost,shippingType);
     }
  
     private double calcDHLShipping(Order order, String shippingType) {

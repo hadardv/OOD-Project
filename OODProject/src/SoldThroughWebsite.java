@@ -1,4 +1,3 @@
-import java.util.LinkedHashSet;
 
 public class SoldThroughWebsite extends Product {
 	private static final int dollarEx=4;
@@ -6,11 +5,11 @@ public class SoldThroughWebsite extends Product {
 	private String destCountry;
 	private String priceWithSymbol;
 	public SoldThroughWebsite(String product_name, int cost_price, int selling_price, int stock,
-			double weight, String destCountry) {
-		super(product_name, cost_price, selling_price, stock, weight);
+			double weight,String ID,String destCountry) {
+		super(product_name, cost_price, selling_price, stock, weight,ID);
 		this.priceDollar = selling_price/dollarEx;
 		this.destCountry = destCountry;
-		priceWithSymbol="$"+priceDollar;
+		priceWithSymbol=priceDollar+"$";
 	}
 	public int getPriceDollar() {
 		return priceDollar;

@@ -2,7 +2,7 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 
 public abstract class Product implements Comparable<Product> {
-	public static int cnt=0;
+	
 	protected String ID;
 	protected String product_name;
 	protected int cost_price;
@@ -10,8 +10,8 @@ public abstract class Product implements Comparable<Product> {
 	protected int stock;
 	protected double weight;
 	protected LinkedHashSet<Order> ordersList;
-	public Product(String product_name, int cost_price, int selling_price, int stock,double weight) {
-		this.ID=""+(++cnt);
+	public Product(String product_name, int cost_price, int selling_price, int stock,double weight, String ID) {
+		this.ID=ID;
 		this.product_name = product_name;
 		this.cost_price = cost_price;
 		this.selling_price = selling_price;
@@ -86,6 +86,7 @@ public abstract class Product implements Comparable<Product> {
     }
     public void addOrder(Order order) {
         ordersList.add(order);
+        order.getCmp().getCompany().sendOrderNotification(order);
     }
 
     // Method to remove an order from the LinkedList

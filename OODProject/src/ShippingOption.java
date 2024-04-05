@@ -1,9 +1,9 @@
 public class ShippingOption  {
-    private String company;
+    private ShippingCompany company;
     private double cost;
     private String type;
  
-    public ShippingOption(String company, double cost, String type) {
+    public ShippingOption(ShippingCompany company, double cost, String type) {
         this.company = company;
         this.cost = cost;
         this.type = type;
@@ -11,13 +11,13 @@ public class ShippingOption  {
     }
  
     // Getter for company name
-    public String getCompany() {
+    public ShippingCompany getCompany() {
         return company;
     }
     
  
     // Setter for company name
-    public void setCompany(String company) {
+    public void setCompany(ShippingCompany company) {
         this.company = company;
     }
  

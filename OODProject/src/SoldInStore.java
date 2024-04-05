@@ -1,9 +1,8 @@
-import java.util.LinkedHashSet;
 
 public class SoldInStore extends Product implements FormatForAccountant,FormatForCustomer{
 
-	public SoldInStore(String product_name, int cost_price, int selling_price, int stock,double weight) {
-		super(product_name, cost_price, selling_price, stock, weight);
+	public SoldInStore(String product_name, int cost_price, int selling_price, int stock,double weight,String ID) {
+		super(product_name, cost_price, selling_price, stock, weight, ID);
 	}
 	
 	public void printForCustomer(Order o) {
