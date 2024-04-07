@@ -1,8 +1,7 @@
 import java.util.Scanner;
 
 public class Order {
-	protected static int num=1;
-	private int orderNum;
+	private String orderID;
 	private int quantity;
 	private int totalPrice;
 	private Customer customer;
@@ -10,9 +9,9 @@ public class Order {
 	private String destCountry;
 	private double parcelWeight;
 	private ShippingOption cmp;
-	public Order(int quantity, Customer customer, Product product) {
+	public Order(String orderID,int quantity, Customer customer, Product product) {
 		super();
-		orderNum=num++;
+		this.orderID=orderID;
 		this.quantity = quantity;
 		this.customer = customer;
 		this.product = product;
@@ -21,9 +20,9 @@ public class Order {
 		cmp=checkSOption();
 		
 	}
-	public Order(int quantity,Customer customer,Product product,ShippingOption opt) {
+	public Order(String orderID,int quantity,Customer customer,Product product,ShippingOption opt) {
 		super();
-		orderNum=num++;
+		this.orderID=orderID;
 		this.quantity = quantity;
 		this.customer = customer;
 		this.product = product;
@@ -61,11 +60,11 @@ public class Order {
 	public void setProduct(Product product) {
 		this.product = product;
 	}
-	public int getOrderNum() {
-		return orderNum;
+	public String getOrderNum() {
+		return orderID;
 	}
-	public void setOrderNum(int orderNum) {
-		this.orderNum = orderNum;
+	public void setOrderNum(String orderNum) {
+		this.orderID = orderNum;
 	}
 	public int getTotalPrice() {
 		return totalPrice;
@@ -108,9 +107,15 @@ public class Order {
 		}
 		return chosenOption;
 	}
-	
+	public String getID() {
+		return orderID;
+	}
 	@Override
 	public String toString() {
-		return "Parcel price: " + this.getTotalPrice() + "\n" + this.getCmp().toString() ;
+		return "Order [orderID=" + orderID + ", quantity=" + quantity + ", totalPrice=" + totalPrice + ", customer="
+				+ customer + ", product=" + product + ", destCountry=" + destCountry + ", parcelWeight=" + parcelWeight
+				+ ", cmp=" + cmp + "]";
 	}
+	
+
 }

@@ -1,5 +1,7 @@
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.Stack;
 
 public abstract class Product implements Comparable<Product> {
 	
@@ -49,7 +51,7 @@ public abstract class Product implements Comparable<Product> {
 	public void setStock(int stock) {
 		this.stock = stock;
 	}
-	public LinkedHashSet<Order> getHs() {
+	public LinkedHashSet<Order> getOrders() {
 		return ordersList;
 	}
 	public String getID() {
@@ -92,6 +94,33 @@ public abstract class Product implements Comparable<Product> {
     // Method to remove an order from the LinkedList
     public boolean removeOrder(Order order) {
         return ordersList.remove(order);
+    }
+    public boolean checkUniqueOrderID(String id) {
+    	Iterator<Order> itr = ordersList.iterator();
+    	while(itr.hasNext()) {
+    		Order o=itr.next();
+    		if(o.getID().equals(id))
+    			return false;
+    	}
+    	return true;
+    }
+    
+    public void undoOrders() {
+    	//Creating a tempStack with the orders so we undo it from end to start
+    	Stack<Order> tempOrders = new Stack<>();
+    	for(Order o:ordersList) {
+    		tempOrders.add(o);
+    	}
+    	while(!tempOrders.isEmpty()) {
+    		Order o=tempOrders.pop();
+    		System.out.println("Due to unexpected circumstances this order has been canceled");
+    		o.toString(); 
+    		ordersList.remove(o);
+    		int quantity=o.getQuantity();
+    		Product p=o.getProduct();
+    		p.setStock(p.getStock()+quantity);
+    		}
+    	
     }
 }
 
