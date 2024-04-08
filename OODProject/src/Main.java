@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 public class Main {
 	
-	public static Scanner s = new Scanner(System.in);
+	//public static Scanner s = new Scanner(System.in);
 	public static Store store = new Store();
 	public static final Contact DHL_CONTACT =new Contact ("Moshe Cohen","0548100189");
 	public static final Contact FEDEX_CONTACT = new Contact ("Avi Levi","0543334456");
@@ -53,12 +53,15 @@ public class Main {
 			    
 			// add product
 			case Q2:
+				Scanner s = new Scanner(System.in);
 				MenuActionCompleteListener listener2 = new MenuActionCompleteListener();
-				Product product;
+				Product product=null;
 				String ID;
 				String name;
+				String countryDist;
+				int productTypeSold;
 				int stock;
-				int weight;
+				double weight;
 				int costPrice;
 				int sellingPrice;
 				System.out.println("Enter the product id");
@@ -70,24 +73,42 @@ public class Main {
 				costPrice = s.nextInt();
 				System.out.println("Enter the product selling price");
 				sellingPrice = s.nextInt();
-				System.out.println("Enter the product type");
-		        ProductFactoryClass.ProductType type = ProductFactoryClass.ProductType.valueOf(s.nextLine().toUpperCase());
+		        //ProductFactoryClass.ProductType type = ProductFactoryClass.ProductType.valueOf(s.nextLine().toUpperCase());
 				System.out.println("Enter the quantity");
 				stock = s.nextInt();
 				System.out.println("Enter the weight of the product");
-				weight = s.nextInt();
-				product=ProductFactoryClass.createProduct(type, name, costPrice, sellingPrice, stock,weight ,ID);
+				weight = s.nextDouble();
+				do {
+					System.out.println("Enter the product type for your order");
+					System.out.println("1-In Store\n2-Sold In Website\n3-Sold To WholeSalers");
+					productTypeSold=s.nextInt();
+				}while(productTypeSold<1 || productTypeSold>3);
+				switch(productTypeSold) {
+				case 1:
+					product=ProductFactoryClass.createProduct(ProductFactoryClass.eProductType.IN_STORE, name, costPrice, sellingPrice, stock,weight ,ID);
+					break;
+				case 2:
+					System.out.println("To what country do you want to enable the product?");
+					s.next();
+					countryDist = s.nextLine();
+					product=ProductFactoryClass.createProduct(ProductFactoryClass.eProductType.WEBSITE, name, costPrice, sellingPrice, stock,weight ,ID,countryDist);
+					break;
+				case 3:
+					product=ProductFactoryClass.createProduct(ProductFactoryClass.eProductType.WHOLE_SALERS, name, costPrice, sellingPrice, stock,weight ,ID);
+					break;
+				}
 				store.addProduct(product);
 			    break;
 			    
 			// remove a product from the store
 			case Q3:
+				Scanner s1 = new Scanner(System.in);
 				MenuActionCompleteListener listener3 = new MenuActionCompleteListener();
 				String productIdToRemove;
 				Product productToRemove;
-				Main.store.getProducts().toString();
+				System.out.println(Main.store.toString());
 				System.out.println("Enter the product's ID that you want to delete:");
-				productIdToRemove=s.nextLine();
+				productIdToRemove=s1.nextLine();
 				productToRemove = store.findProductById(productIdToRemove);
 				store.removeProduct(productToRemove);
 				
@@ -95,56 +116,62 @@ public class Main {
 
 				
 			case Q4:
+				Scanner s2 = new Scanner(System.in);
 				MenuActionCompleteListener listener4 = new MenuActionCompleteListener();
 				String productIdToUpdate;
 				Product productToUpdate;
 				int newStock;
+				System.out.println(Main.store.toString());
 				System.out.println("Enter the product's ID that you want to update it's stock:");
-				productIdToUpdate=s.nextLine();
+				productIdToUpdate=s2.nextLine();
 				productToUpdate = store.findProductById(productIdToUpdate);
 				System.out.println("Enter the new quantity/stock of the product:");
-				s.next(); // clear buffer
-				newStock=s.nextInt();
+				newStock=s2.nextInt();
 				productToUpdate.setStock(newStock);
+				System.out.println(Main.store.toString());
 			    break;
 			
+			// here the problem with c
 			case Q5:
+				Scanner s3 = new Scanner(System.in);
 				MenuActionCompleteListener listener5 = new MenuActionCompleteListener(); 
-				int productType;
-				if(store.getProducts().size()<1) {
+				if(store.getProducts().size()<1) 
+				{
 					System.out.println("Not enough products to create an order");
 					break;
 				}
+				
+				Customer c = null;
+				int productType;
 				System.out.println("Before we create an order, please enter customer details:");
-				Customer c=null;
 				System.out.println("Enter the customer's name:");
-				String cName=s.nextLine();
+				String cName=s3.nextLine();
 				System.out.println("Enter the customer's number:");
-				String pNum=s.nextLine();
+				String pNum=s3.nextLine();
 				c.setPhone_number(pNum);
 				c.setCustomer_name(cName);
 				do {
 					System.out.println("Enter the product type for your order");
 					System.out.println("1-In Store\n2-Sold In Website\n3-Sold To WholeSalers");
-					productType=s.nextInt();
+					productType=s3.nextInt();
 				}while(productType<1 || productType>3);
 				switch(productType) {
 				case 1:
 					for(Product p:store.getProducts()) {
 						if(p instanceof SoldInStore)
-							p.toString();
+							System.out.println(p.toString());
 					}
 					break;
 				case 2:
 					for(Product p:store.getProducts()) {
 						if(p instanceof SoldThroughWebsite)
-							p.toString();
+							System.out.println(p.toString());
 					}
 					break;
 				case 3:
 					for(Product p:store.getProducts()) {
 						if(p instanceof SoldToWholeSalers)
-							p.toString();
+							System.out.println(p.toString());
 					}
 					break;
 				}
@@ -155,7 +182,8 @@ public class Main {
 				Product p=null;
 				while(!legitPId) {
 				System.out.println("Enter the product ID you would like to add for your order");
-				productId=s.nextLine();
+				System.out.println(Main.store.toString());
+				productId=s3.nextLine();
 				p=store.findProductById(productId);
 				if(productType==1 && p instanceof SoldInStore)
 					legitPId=true;
@@ -167,8 +195,8 @@ public class Main {
 				while(!legitQuantity) {
 					System.out.println("Enter the quantity you want to add for your order("+p.getStock()+")Available!");
 					//CHECK IF CLEAR BUFFER CAUSES PROBLEMS
-					s.next(); // CLEAR BUFFER
-					quantity=s.nextInt();
+					s3.next(); // CLEAR BUFFER
+					quantity=s3.nextInt();
 					if(quantity>p.getStock())
 						legitQuantity=false;
 					else {

@@ -64,8 +64,8 @@ public abstract class Product implements Comparable<Product> {
 	}
 	@Override
 	public String toString() {
-		return "Product [product_name=" + product_name + ", cost_price=" + cost_price + ", selling_price="
-				+ selling_price + ", stock=" + stock + "";
+		return "Product:" + ID + " name: " + product_name + ", cost price: " + cost_price + ", selling price: "
+				+ selling_price + ", stock:" + stock + "";
 	}
 	
 	@Override

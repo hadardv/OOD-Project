@@ -4,8 +4,7 @@ public class SoldThroughWebsite extends Product {
 	private int priceDollar;
 	private String destCountry;
 	private String priceWithSymbol;
-	public SoldThroughWebsite(String product_name, int cost_price, int selling_price, int stock,
-			double weight,String ID,String destCountry) {
+	public SoldThroughWebsite(String product_name, int cost_price, int selling_price, int stock,double weight,String ID,String destCountry) {
 		super(product_name, cost_price, selling_price, stock, weight,ID);
 		this.priceDollar = selling_price/dollarEx;
 		this.destCountry = destCountry;
