@@ -113,7 +113,7 @@ public abstract class Product implements Comparable<Product> {
     	}
     	while(!tempOrders.isEmpty()) {
     		Order o=tempOrders.pop();
-    		System.out.println("Due to unexpected circumstances this order has been canceled");
+    		System.out.println("Due to unexpected circumstances order"+o.getID()+" has been canceled");
     		o.toString(); 
     		ordersList.remove(o);
     		int quantity=o.getQuantity();

@@ -6,7 +6,6 @@ public class Order {
 	private int totalPrice;
 	private Customer customer;
 	private Product product;
-	private String destCountry;
 	private double parcelWeight;
 	private ShippingOption cmp;
 	public Order(String orderID,int quantity, Customer customer, Product product) {
@@ -17,7 +16,10 @@ public class Order {
 		this.product = product;
 		totalPrice=quantity*product.getSelling_price();
 		setParcelWeight(product.getWeight()*this.quantity);
+		if(product instanceof SoldThroughWebsite) 
 		cmp=checkSOption();
+		else
+			cmp=null;
 		
 	}
 	public Order(String orderID,int quantity,Customer customer,Product product,ShippingOption opt) {
@@ -32,12 +34,6 @@ public class Order {
 	}
 	public int getQuantity() {
 		return quantity;
-	}
-	public String getDestCountry() {
-		return destCountry;
-	}
-	public void setDestCountry(String destCountry) {
-		this.destCountry = destCountry;
 	}
 	public ShippingOption getCmp() {
 		return cmp;
@@ -113,7 +109,7 @@ public class Order {
 	@Override
 	public String toString() {
 		return "Order [orderID=" + orderID + ", quantity=" + quantity + ", totalPrice=" + totalPrice + ", customer="
-				+ customer + ", product=" + product + ", destCountry=" + destCountry + ", parcelWeight=" + parcelWeight
+				+ customer + ", product=" + product + ", parcelWeight=" + parcelWeight
 				+ ", cmp=" + cmp + "]";
 	}
 	

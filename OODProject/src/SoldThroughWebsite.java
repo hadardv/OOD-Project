@@ -8,7 +8,7 @@ public class SoldThroughWebsite extends Product {
 		super(product_name, cost_price, selling_price, stock, weight,ID);
 		this.priceDollar = selling_price/dollarEx;
 		this.destCountry = destCountry;
-		priceWithSymbol=priceDollar+"$";
+		priceWithSymbol="$"+priceDollar;
 	}
 	public int getPriceDollar() {
 		return priceDollar;
@@ -25,5 +25,13 @@ public class SoldThroughWebsite extends Product {
 	public static int getDollarex() {
 		return dollarEx;
 	}
+	@Override
+	public String toString() {
+        StringBuffer str = new StringBuffer (super.toString());
+        str.append(" The County is " + destCountry);
+        return str.toString();
+    }
+	
+	
 	
 }

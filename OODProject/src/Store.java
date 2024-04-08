@@ -50,7 +50,7 @@ public static void loadProducts() {
 	Main.store.addProduct(ProductFactoryClass.createProduct(ProductFactoryClass.eProductType.IN_STORE, "HP Envy Printer", 120, 180, 10, 6,"100"));
 	Main.store.addProduct(ProductFactoryClass.createProduct(ProductFactoryClass.eProductType.IN_STORE, "Sony PS5 Console", 450, 500, 30, 14,"101"));
 	Main.store.addProduct(ProductFactoryClass.createProduct(ProductFactoryClass.eProductType.IN_STORE, "Canon EOS 1500D DSLR Camera", 400, 600, 50, 3,"102"));
-	Main.store.addProduct(ProductFactoryClass.createProduct(ProductFactoryClass.eProductType.WEBSITE, "Apple MacBook Air", 999, 1200, 25, 3,"103","Israle"));
+	Main.store.addProduct(ProductFactoryClass.createProduct(ProductFactoryClass.eProductType.WEBSITE, "Apple MacBook Air", 999, 1200, 25, 3,"103","Israel"));
 	Main.store.addProduct(ProductFactoryClass.createProduct(ProductFactoryClass.eProductType.WEBSITE, "Samsung Galaxy Tab S7", 650, 700, 15, 1,"104","USA"));
 	Main.store.addProduct(ProductFactoryClass.createProduct(ProductFactoryClass.eProductType.WEBSITE, "Google Nest Hub Max", 229, 279, 20, 2,"105","Italy"));
 	Main.store.addProduct(ProductFactoryClass.createProduct(ProductFactoryClass.eProductType.WHOLE_SALERS, "Philips Hue Smart Lightbulb", 45, 60, 100, 0.5,"106"));
