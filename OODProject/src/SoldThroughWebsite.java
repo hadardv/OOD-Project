@@ -28,7 +28,7 @@ public class SoldThroughWebsite extends Product {
 	@Override
 	public String toString() {
         StringBuffer str = new StringBuffer (super.toString());
-        str.append(" The County is " + destCountry);
+        str.append(" Product type is sold through website");
         return str.toString();
     }
 	

@@ -17,5 +17,11 @@ public class SoldToWholeSalers extends Product implements FormatForAccountant {
 		int profit=o.getQuantity() * (o.getProduct().getSelling_price() - o.getProduct().getCost_price());
 		System.out.println("Totall Profit is: "+profit);		
 	}
+	@Override
+	public String toString() {
+        StringBuffer str = new StringBuffer (super.toString());
+        str.append(" Product type is sold to wholesalers");
+        return str.toString();
+    }
 	
 }

@@ -11,6 +11,7 @@ public abstract class Product implements Comparable<Product> {
 	protected int selling_price;
 	protected int stock;
 	protected double weight;
+	protected int profitAllOrders;
 	protected LinkedHashSet<Order> ordersList;
 	public Product(String product_name, int cost_price, int selling_price, int stock,double weight, String ID) {
 		this.ID=ID;
@@ -19,6 +20,8 @@ public abstract class Product implements Comparable<Product> {
 		this.selling_price = selling_price;
 		this.stock = stock;
 		this.weight=weight;
+		if (this.ordersList != null)
+			profitAllOrders = calcProfitOrders(ordersList);
 		ordersList = new LinkedHashSet<Order>();
 	}
 	public double getWeight() {
@@ -60,12 +63,28 @@ public abstract class Product implements Comparable<Product> {
 	public void setID(String iD) {
 		ID = iD;
 	}
-	public void setHs(LinkedHashSet<Order> ordersList) {
+	
+	public int calcProfitOrders (LinkedHashSet<Order>OrdersList)
+	{
+		int sum = 0;
+		for (Order order : ordersList) {
+			sum += order.getTotalPrice() - order.getTotalPrice(); // selling price - cost price = profit
+		}
+		return sum;
 	}
+	
 	@Override
 	public String toString() {
 		return "Product:" + ID + " name: " + product_name + ", cost price: " + cost_price + ", selling price: "
-				+ selling_price + ", stock:" + stock + "";
+				+ selling_price + ", stock:" + stock + ", Profit from product sales: " + profitAllOrders ;
+	}
+	
+	public void printOrders()
+	{
+		for (Order order : ordersList) {
+	        Order o = order;
+	        System.out.println(o.toString());
+	    }
 	}
 	
 	@Override

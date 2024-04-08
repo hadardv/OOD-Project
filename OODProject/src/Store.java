@@ -6,13 +6,31 @@ import javax.swing.text.html.HTMLDocument.Iterator;
 
 public class Store {
 	   private LinkedHashSet<Product> products;
+	   private int profit;
+	   
 
 	public Store() {
 		products = new LinkedHashSet<Product>();
+		profit = calculaeProfit();
 	}
 	   
 	        
-    public  boolean addProduct(Product product) {
+    public int getProfit() {
+		return profit;
+	}
+
+
+	public void setProfit(int profit) {
+		this.profit = profit;
+	}
+
+
+	public void setProducts(LinkedHashSet<Product> products) {
+		this.products = products;
+	}
+
+
+	public  boolean addProduct(Product product) {
         return products.add(product);
     }
 
@@ -22,6 +40,15 @@ public class Store {
 
     public LinkedHashSet<Product> getProducts() {
         return products;
+    }
+    
+    public int calculaeProfit ()
+    {
+    	int profit = 0;
+    	for (Product product : products) {
+    		profit += product.calcProfitOrders(product.getOrders()); //total profit from all the sales of all the products
+    	}
+    	return profit;
     }
     
     public Product findProductById(String productId) {
@@ -40,6 +67,7 @@ public class Store {
 	        Product p = product;
 	        allTheStore.append(p.toString()).append("\n\n");
 	    }
+	    allTheStore.append("Store's profit is: " + profit);
 	    return allTheStore.toString();
 	}
     

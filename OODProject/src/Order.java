@@ -4,6 +4,8 @@ public class Order {
 	private String orderID;
 	private int quantity;
 	private int totalPrice;
+	private int totalCostPrice;
+	private int profitOrder;
 	private Customer customer;
 	private Product product;
 	private double parcelWeight;
@@ -15,6 +17,8 @@ public class Order {
 		this.customer = customer;
 		this.product = product;
 		totalPrice=quantity*product.getSelling_price();
+		totalCostPrice = quantity*product.getCost_price();
+		profitOrder = totalPrice - totalCostPrice;
 		setParcelWeight(product.getWeight()*this.quantity);
 		if(product instanceof SoldThroughWebsite) 
 		cmp=checkSOption();
@@ -29,6 +33,7 @@ public class Order {
 		this.customer = customer;
 		this.product = product;
 		totalPrice=quantity*product.getSelling_price();
+		totalCostPrice = quantity*product.getCost_price();
 		setParcelWeight(product.getWeight()*this.quantity);
 		cmp=opt;
 	}
@@ -65,6 +70,12 @@ public class Order {
 	public int getTotalPrice() {
 		return totalPrice;
 	}
+	public int getTotalCostPrice() {
+		return totalCostPrice;
+	}
+	public int getProfitOrder() {
+		return profitOrder;
+	}
 	public void setTotalPrice(int totalPrice) {
 		this.totalPrice = totalPrice;
 	}
@@ -73,6 +84,13 @@ public class Order {
 	}
 	public void setParcelWeight(double parcelWeight) {
 		this.parcelWeight = parcelWeight;
+	}
+	
+	public int calcProfitOrder ()
+	{
+		int profit = 0;
+		profit += getTotalPrice() - getTotalCostPrice();
+		return profit;
 	}
 	public ShippingOption checkSOption() {
 		
@@ -108,9 +126,16 @@ public class Order {
 	}
 	@Override
 	public String toString() {
-		return "Order [orderID=" + orderID + ", quantity=" + quantity + ", totalPrice=" + totalPrice + ", customer="
-				+ customer + ", product=" + product + ", parcelWeight=" + parcelWeight
-				+ ", cmp=" + cmp + "]";
+		StringBuffer str = new StringBuffer ();
+		str.append("\n\n\nOrder ID: " + orderID + " Quantity: " + quantity + " Total price: " + totalPrice
+					+ " \n" + customer + " \n" +product.toString() + "\nParcel weight: " +parcelWeight +
+					" Profit from order: " + profitOrder + "\n\n");
+		if (product instanceof SoldThroughWebsite)
+		{
+			str.append("\nShipping Company: " +cmp.getCompany().getName() + " Delivery:" +cmp.getType().toString() + "\n" );
+		}
+		return str.toString();
+		
 	}
 	
 

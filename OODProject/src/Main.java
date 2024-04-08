@@ -24,6 +24,10 @@ public class Main {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
+		ActionSuccessCommand actionSuccessCommand = new ActionSuccessCommand();
+		MenuActionCompleteListener listener = new MenuActionCompleteListener();
+		actionSuccessCommand.registerObserver(listener);
+		
 		int choice;
 		
 		do {
@@ -44,67 +48,20 @@ public class Main {
 
 			// load hard coded store
 			case Q1:
-				MenuActionCompleteListener listener1 = new MenuActionCompleteListener();
 				Store.loadProducts();
 				Store.loadOrdersAndCustomers();
-				
-				
 			    break;
 			    
 			// add product
 			case Q2:
-				//Scanner s = new Scanner(System.in);
-				MenuActionCompleteListener listener2 = new MenuActionCompleteListener();
-				Product product=null;
-				String ID;
-				String name;
-				String countryDist;
-				int productTypeSold;
-				int stock;
-				double weight;
-				int costPrice;
-				int sellingPrice;
-				System.out.println("Enter the product id");
-				s.nextLine(); // CLEAR BUFFER
-				ID = s.nextLine();
-				// we need to add functionality that checks that every id is unique 
-				System.out.println("Enter the product name");
-				name = s.nextLine();
-				System.out.println("Enter the product cost price");
-				costPrice = s.nextInt();
-				System.out.println("Enter the product selling price");
-				sellingPrice = s.nextInt();
-		        //ProductFactoryClass.ProductType type = ProductFactoryClass.ProductType.valueOf(s.nextLine().toUpperCase());
-				System.out.println("Enter the quantity");
-				stock = s.nextInt();
-				System.out.println("Enter the weight of the product");
-				weight = s.nextDouble();
-				do {
-					System.out.println("Enter the product type for your order");
-					System.out.println("1-In Store\n2-Sold In Website\n3-Sold To WholeSalers");
-					productTypeSold=s.nextInt();
-				}while(productTypeSold<1 || productTypeSold>3);
-				switch(productTypeSold) {
-				case 1:
-					product=ProductFactoryClass.createProduct(ProductFactoryClass.eProductType.IN_STORE, name, costPrice, sellingPrice, stock,weight ,ID);
-					break;
-				case 2:
-					System.out.println("To what country do you want to enable the product?");
-					s.nextLine(); // CLEAR BUFFER
-					countryDist = s.nextLine();
-					product=ProductFactoryClass.createProduct(ProductFactoryClass.eProductType.WEBSITE, name, costPrice, sellingPrice, stock,weight ,ID,countryDist);
-					break;
-				case 3:
-					product=ProductFactoryClass.createProduct(ProductFactoryClass.eProductType.WHOLE_SALERS, name, costPrice, sellingPrice, stock,weight ,ID);
-					break;
-				}
-				store.addProduct(product);
+				
+				Scanner scanner1 = new Scanner(System.in);
+				AddProductCommand addProductCommand = new AddProductCommand(store, scanner1 );
+				addProductCommand.execute();
 			    break;
 			    
 			// remove a product from the store
 			case Q3:
-				//Scanner s1 = new Scanner(System.in);
-				MenuActionCompleteListener listener3 = new MenuActionCompleteListener();
 				String productIdToRemove;
 				Product productToRemove;
 				System.out.println(Main.store.toString());
@@ -116,10 +73,8 @@ public class Main {
 				
 				break;
 
-				
+			// update stock for a specific product	
 			case Q4:
-				//Scanner s2 = new Scanner(System.in);
-				MenuActionCompleteListener listener4 = new MenuActionCompleteListener();
 				String productIdToUpdate;
 				Product productToUpdate;
 				int newStock;
@@ -134,105 +89,19 @@ public class Main {
 				System.out.println(Main.store.toString());
 			    break;
 			
-		
+		// add an order
 			case Q5:
-				//Scanner s3 = new Scanner(System.in);
-				MenuActionCompleteListener listener5 = new MenuActionCompleteListener(); 
-				if(store.getProducts().size()<1) 
-				{
-					System.out.println("Not enough products to create an order");
-					break;
-				}
-				Customer c = null;
-				int productType;
-				System.out.println("Before we create an order, please enter customer details:");
-				System.out.println("Enter the customer's name:");
-				s.nextLine();//clear buffer
-				String cName=s.nextLine();
-				System.out.println("Enter the customer's number:");
-				String pNum=s.nextLine();
-				c=new Customer(cName,pNum);
-				do {
-					System.out.println("Enter the product type for your order");
-					System.out.println("1-In Store\n2-Sold In Website\n3-Sold To WholeSalers");
-					productType=s.nextInt();
-				}while(productType<1 || productType>3);
-				switch(productType) {
-				case 1:
-					for(Product p:store.getProducts()) {
-						if(p instanceof SoldInStore)
-							System.out.println(p.toString());
-					}
-					break;
-				case 2:
-					for(Product p:store.getProducts()) {
-						if(p instanceof SoldThroughWebsite)
-							System.out.println(p.toString());
-					}
-					break;
-				case 3:
-					for(Product p:store.getProducts()) {
-						if(p instanceof SoldToWholeSalers)
-							System.out.println(p.toString());
-					}
-					break;
-				}
-				String productId="";
-				String orderId = null;
+				Scanner scanner = new Scanner(System.in);
+				AddOrderCommand addOrderCommand = new AddOrderCommand(store, scanner );
+				OrderPlacedListener listener2 = new OrderPlacedListener();
+				addOrderCommand.registerObserver(listener2);
+				addOrderCommand.execute();
 
-				
-				int quantity=0;
-				boolean legitOId=false,legitPId=false, legitQuantity=false;
-				Product p=null;
-				s.nextLine(); // Clear Buffer
-				while(!legitPId) {
-				System.out.println("Enter the product ID you would like to add for your order");
-				System.out.println(Main.store.toString());
-				productId=s.nextLine();
-				p=store.findProductById(productId);
-				if(productType==1 && p instanceof SoldInStore)
-					legitPId=true;
-				if(productType==2 && p instanceof SoldThroughWebsite)
-					legitPId=true;
-				if(productType==3 && p instanceof SoldToWholeSalers)
-					legitPId=true;
-				}
-				while(!legitQuantity) {
-					System.out.println("Enter the quantity you want to add for your order("+p.getStock()+")Available!");
-					quantity=s.nextInt();
-					if(quantity>p.getStock()){
-						System.out.println("Invalid Quantity!Try again.");
-						legitQuantity=false;
-					}
-					else {
-						legitQuantity=true;	
-						p.setStock(p.getStock()-quantity);
-					}
-					
-				}
-				s.nextLine(); // Clear buffer
-				while(!legitOId) {
-					System.out.println("Enter your desired order ID:");
-					orderId=s.nextLine();
-					if(!p.checkUniqueOrderID(orderId)) {
-						System.out.println("This Order ID is alrrady taken, choose another!");
-						legitOId=false;
-					}
-					else
-						legitOId=true;
-				}
-				Order o=new Order(orderId,quantity,c,p);
-				if(!p.getOrders().add(o)) {
-					System.out.println("Error adding your product - duplicate");
-				}
-				else {
-					System.out.println("Order added successfully");
-				}
 				break;
-
+				
+			// undo an order
 			case Q6:
 				Scanner s4=new Scanner(System.in);
-				MenuActionCompleteListener listener6 = new MenuActionCompleteListener(); 
 				String pChoice;
 				System.out.println("Enter The Product's ID that you would like to undo it's orders:");
 				pChoice=s4.nextLine();
@@ -240,7 +109,37 @@ public class Main {
 				p4.undoOrders();
 				
 			    break;
+			    
+			// show data based on product ID
+			case Q7:
+				Scanner s5=new Scanner(System.in);
+				String choiceId;
+				Product theProduct;
+				System.out.println(store.toString());
+				System.out.println("Type product ID to preview:");
+				choiceId=s5.nextLine();
+				theProduct = store.findProductById(choiceId);
+				System.out.println(theProduct.toString());
+				break;
+				
+			// show the data of all the products in the store at the moment
+			case Q8:
+				System.out.println("The products in the store are: ");
+				System.out.println(store.toString());
+				break;
+				
+			// show the orders of specific product
+			case Q9:
+				Scanner s6=new Scanner(System.in);
+				String Id;
+				Product chosenProduct;
+				System.out.println(store.toString());
+				System.out.println("Choose the product you want to preview it's orders, Enter it's ID:");
+				Id=s6.nextLine();
+				chosenProduct = store.findProductById(Id);
+				System.out.println(chosenProduct.getOrders().toString());
 			}
+			actionSuccessCommand.execute();
 		} while (choice != EXIT); // The user want to exit the menu + output
 		
 	}
