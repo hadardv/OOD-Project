@@ -1,18 +1,67 @@
+import java.util.Comparator;
 import java.util.LinkedHashSet;
+import java.util.Scanner;
 import java.util.Set;
+import java.util.Stack;
 import java.util.TreeSet;
 
-import javax.swing.text.html.HTMLDocument.Iterator;
 
 public class Store {
-	   private LinkedHashSet<Product> products;
+    public static Scanner s = new Scanner(System.in);
+       private Set<Product> products = new TreeSet<>(); //sort by String
+	   private Stack<Command> stack = new Stack<>();
 	   private int profit;
+	   private static Store instance;
+	   private StoreMemento memento;
+
 	   
 
-	public Store() {
-		products = new LinkedHashSet<Product>();
-		profit = calculaeProfit();
-	}
+	   public Store() {
+		    Comparator<Product> productComparator = new Comparator<Product>() {
+		        @Override
+		        public int compare(Product p1, Product p2) {
+		            // Example comparison by id
+		            return p1.getID().compareTo(p2.getID());
+		        }
+		    };
+		    this.products = new TreeSet<>(productComparator);
+		    profit = 0;
+		}
+	
+	 public static Store getInstance() { //singleton
+	        if (instance == null) instance = new Store();
+	        return instance;
+	    }
+	
+	public void saveToMemento() {
+        this.memento = new StoreMemento(products, stack);
+        System.out.println("State saved!");
+    }
+
+
+    public StoreMemento getMemento() {
+        return memento;
+    }
+
+    public void restoreFromMemento(StoreMemento memento) {
+        if (memento == null) {
+            System.out.println("No previous states.");
+            return;
+        }
+        this.products = new TreeSet<>();
+        products.addAll(memento.getAllProducts());
+        for (Product product : products) {
+            product.restoreFromMomneto(product.getMemento());
+        }
+        this.stack = new Stack<>();
+        this.stack.addAll(memento.getStack());
+        System.out.println("State restored!");
+    }
+
+    public Stack<Command> getStack() {
+        return stack;
+    }
+
 	   
 	        
     public int getProfit() {
@@ -34,21 +83,42 @@ public class Store {
         return products.add(product);
     }
 
-    public boolean removeProduct(Product product) {
-        return products.remove(product);
+    public boolean removeProduct() {
+    	String productIdToRemove;
+		Product productToRemove;
+		System.out.println(Main.store.toString());
+		System.out.println("Enter the product's ID that you want to delete:");
+		s.nextLine(); // Clear buffer
+		productIdToRemove=s.nextLine();
+		productToRemove = findProductById(productIdToRemove);
+        return products.remove(productToRemove);
+    }
+    
+    public void updateStock () {
+    	String productIdToUpdate;
+		Product productToUpdate;
+		int newStock;
+		System.out.println(Main.store.toString());
+		System.out.println("Enter the product's ID that you want to update it's stock:");
+		s.nextLine();
+		productIdToUpdate=s.nextLine();
+		productToUpdate = Main.store.findProductById(productIdToUpdate);
+		System.out.println("Enter the new quantity/stock of the product:");
+		newStock=s.nextInt();
+		productToUpdate.setStock(newStock);
     }
 
-    public LinkedHashSet<Product> getProducts() {
+    public Set<Product> getProducts() {
         return products;
     }
     
-    public int calculaeProfit ()
+    public void calculaeProfit ()
     {
     	int profit = 0;
     	for (Product product : products) {
-    		profit += product.calcProfitOrders(product.getOrders()); //total profit from all the sales of all the products
+    		profit += product.calcProfitOrders(); //total profit from all the sales of all the products
     	}
-    	return profit;
+    	 this.profit = profit;
     }
     
     public Product findProductById(String productId) {

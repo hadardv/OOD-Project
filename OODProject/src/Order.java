@@ -10,6 +10,8 @@ public class Order {
 	private Product product;
 	private double parcelWeight;
 	private ShippingOption cmp;
+	
+	
 	public Order(String orderID,int quantity, Customer customer, Product product) {
 		super();
 		this.orderID=orderID;
@@ -26,6 +28,8 @@ public class Order {
 			cmp=null;
 		
 	}
+	
+	
 	public Order(String orderID,int quantity,Customer customer,Product product,ShippingOption opt) {
 		super();
 		this.orderID=orderID;
@@ -37,51 +41,67 @@ public class Order {
 		setParcelWeight(product.getWeight()*this.quantity);
 		cmp=opt;
 	}
+	
 	public int getQuantity() {
 		return quantity;
 	}
+	
 	public ShippingOption getCmp() {
 		return cmp;
 	}
+	
 	public void setCmp(ShippingOption cmp) {
 		this.cmp = cmp;
 	}
+	
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
+	
 	public Customer getCustomer() {
 		return customer;
 	}
+	
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
 	}
+	
 	public Product getProduct() {
 		return product;
 	}
+	
 	public void setProduct(Product product) {
 		this.product = product;
 	}
+	
 	public String getOrderNum() {
 		return orderID;
 	}
+	
 	public void setOrderNum(String orderNum) {
 		this.orderID = orderNum;
 	}
+	
 	public int getTotalPrice() {
 		return totalPrice;
 	}
+	
 	public int getTotalCostPrice() {
 		return totalCostPrice;
 	}
+	
 	public int getProfitOrder() {
 		return profitOrder;
 	}
+	
 	public void setTotalPrice(int totalPrice) {
 		this.totalPrice = totalPrice;
 	}
+	
 	public double getParcelWeight() {
 		return parcelWeight;
 	}
+	
 	public void setParcelWeight(double parcelWeight) {
 		this.parcelWeight = parcelWeight;
 	}
@@ -90,6 +110,7 @@ public class Order {
 	{
 		int profit = 0;
 		profit += getTotalPrice() - getTotalCostPrice();
+		this.profitOrder = profit;
 		return profit;
 	}
 	public ShippingOption checkSOption() {

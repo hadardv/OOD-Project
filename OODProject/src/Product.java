@@ -3,7 +3,7 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Stack;
 
-public abstract class Product implements Comparable<Product> {
+public abstract class Product implements Comparable {
 	
 	protected String ID;
 	protected String product_name;
@@ -13,6 +13,8 @@ public abstract class Product implements Comparable<Product> {
 	protected double weight;
 	protected int profitAllOrders;
 	protected LinkedHashSet<Order> ordersList;
+	private  ProductMemento memento;
+	
 	public Product(String product_name, int cost_price, int selling_price, int stock,double weight, String ID) {
 		this.ID=ID;
 		this.product_name = product_name;
@@ -20,10 +22,21 @@ public abstract class Product implements Comparable<Product> {
 		this.selling_price = selling_price;
 		this.stock = stock;
 		this.weight=weight;
-		if (this.ordersList != null)
-			profitAllOrders = calcProfitOrders(ordersList);
+		profitAllOrders = 0;
 		ordersList = new LinkedHashSet<Order>();
 	}
+	
+	 public void saveMemento(){
+	        this.memento = new ProductMemento(ordersList);
+	    }
+	    public void restoreFromMomneto(ProductMemento memento){
+	        this.ordersList = new LinkedHashSet<>();
+	        ordersList.addAll(memento.getOrders());
+	    }
+
+	    public ProductMemento getMemento() {
+	        return memento;
+	    }
 	public double getWeight() {
 		return weight;
 	}
@@ -64,12 +77,15 @@ public abstract class Product implements Comparable<Product> {
 		ID = iD;
 	}
 	
-	public int calcProfitOrders (LinkedHashSet<Order>OrdersList)
+	public int calcProfitOrders ()
 	{
 		int sum = 0;
+		int profit;
 		for (Order order : ordersList) {
-			sum += order.getTotalPrice() - order.getTotalPrice(); // selling price - cost price = profit
+			profit = order.getTotalPrice() - order.getTotalPrice(); // selling price - cost price = profit
+			sum += profit;
 		}
+		this.profitAllOrders = sum;
 		return sum;
 	}
 	
@@ -101,19 +117,30 @@ public abstract class Product implements Comparable<Product> {
         return Objects.hash(ID, product_name);
     }
     
-    public int compareTo(Product other) {
-        // Assuming we're comparing based on the product's ID
-        return this.ID.compareTo(other.ID);
+    @Override
+    public int compareTo(Object other) {
+        if (this == other)
+            return 0;
+        if (other == null)
+            return 1;  // Consider this object greater than null
+        if (!(other instanceof Product))
+            throw new ClassCastException();
+        Product otherProduct = (Product) other;
+
+        // Compare based on the serial field
+        return this.ID.compareTo(otherProduct.ID);
     }
+    
     public void addOrder(Order order) {
         ordersList.add(order);
         order.getCmp().getCompany().sendOrderNotification(order);
     }
+    
 
-    // Method to remove an order from the LinkedList
     public boolean removeOrder(Order order) {
         return ordersList.remove(order);
     }
+    
     public boolean checkUniqueOrderID(String id) {
     	Iterator<Order> itr = ordersList.iterator();
     	while(itr.hasNext()) {

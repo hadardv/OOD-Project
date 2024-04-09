@@ -3,7 +3,7 @@ import java.util.Scanner;
 public class Main {
 	
 	//public static Scanner s = new Scanner(System.in);
-	public static Store store = new Store();
+	 public static Store store = Store.getInstance(); // singleton
 	public static final Contact DHL_CONTACT =new Contact ("Moshe Cohen","0548100189");
 	public static final Contact FEDEX_CONTACT = new Contact ("Avi Levi","0543334456");
 	
@@ -62,31 +62,13 @@ public class Main {
 			    
 			// remove a product from the store
 			case Q3:
-				String productIdToRemove;
-				Product productToRemove;
-				System.out.println(Main.store.toString());
-				System.out.println("Enter the product's ID that you want to delete:");
-				s.nextLine(); // Clear buffer
-				productIdToRemove=s.nextLine();
-				productToRemove = store.findProductById(productIdToRemove);
-				store.removeProduct(productToRemove);
+				store.removeProduct();
 				
 				break;
 
 			// update stock for a specific product	
 			case Q4:
-				String productIdToUpdate;
-				Product productToUpdate;
-				int newStock;
-				System.out.println(Main.store.toString());
-				System.out.println("Enter the product's ID that you want to update it's stock:");
-				s.nextLine();
-				productIdToUpdate=s.nextLine();
-				productToUpdate = store.findProductById(productIdToUpdate);
-				System.out.println("Enter the new quantity/stock of the product:");
-				newStock=s.nextInt();
-				productToUpdate.setStock(newStock);
-				System.out.println(Main.store.toString());
+				store.updateStock();
 			    break;
 			
 		// add an order
@@ -138,6 +120,15 @@ public class Main {
 				Id=s6.nextLine();
 				chosenProduct = store.findProductById(Id);
 				System.out.println(chosenProduct.getOrders().toString());
+				
+			case Q10:
+				 store.saveToMemento();
+                 System.out.println("Store state saved.");
+				break;
+			case Q11:
+				 store.restoreFromMemento(store.getMemento());
+                 System.out.println("Store state restored to last saved state.");
+				break;
 			}
 			actionSuccessCommand.execute();
 		} while (choice != EXIT); // The user want to exit the menu + output
