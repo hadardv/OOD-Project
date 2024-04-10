@@ -23,7 +23,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		
+		Store.Memento memento = null;
 		ActionSuccessCommand actionSuccessCommand = new ActionSuccessCommand();
 		MenuActionCompleteListener listener = new MenuActionCompleteListener();
 		actionSuccessCommand.registerObserver(listener);
@@ -122,11 +122,11 @@ public class Main {
 				System.out.println(chosenProduct.getOrders().toString());
 				
 			case Q10:
-				 store.saveToMemento();
+				 memento = store.createMemento();
                  System.out.println("Store state saved.");
 				break;
 			case Q11:
-				 store.restoreFromMemento(store.getMemento());
+				 store.setMemento(memento);
                  System.out.println("Store state restored to last saved state.");
 				break;
 			}

@@ -1,6 +1,7 @@
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.Set;
 import java.util.Stack;
 
 public abstract class Product implements Comparable {
@@ -13,7 +14,7 @@ public abstract class Product implements Comparable {
 	protected double weight;
 	protected int profitAllOrders;
 	protected LinkedHashSet<Order> ordersList;
-	private  ProductMemento memento;
+	private  Memento memento;
 	
 	public Product(String product_name, int cost_price, int selling_price, int stock,double weight, String ID) {
 		this.ID=ID;
@@ -25,18 +26,39 @@ public abstract class Product implements Comparable {
 		profitAllOrders = 0;
 		ordersList = new LinkedHashSet<Order>();
 	}
-	
-	 public void saveMemento(){
-	        this.memento = new ProductMemento(ordersList);
-	    }
-	    public void restoreFromMomneto(ProductMemento memento){
-	        this.ordersList = new LinkedHashSet<>();
-	        ordersList.addAll(memento.getOrders());
-	    }
 
-	    public ProductMemento getMemento() {
-	        return memento;
-	    }
+    public void createMemento() {
+        this.memento = new Memento(ordersList,profitAllOrders, stock);
+    }
+
+    public void setMemento(Memento mem) {
+        if (mem == null)
+            return;
+        ordersList = new LinkedHashSet<>(mem.getAllOrders());
+        profitAllOrders= mem.profitAllOrders;
+        stock = mem.stock;
+    }
+
+    public Memento getMemento() {
+        return memento;
+    }
+	    
+    public static class Memento {
+        private LinkedHashSet<Order> ordersList = new LinkedHashSet<>();
+        private int profitAllOrders;
+        private int stock;
+
+        public Memento(Set<Order> ordersList,int profitAllOrders, int stock) {
+            this.ordersList = new LinkedHashSet<>(ordersList);
+            this.profitAllOrders = profitAllOrders;
+            this.stock = stock;
+        }
+
+        public Set<Order> getAllOrders() {
+            return ordersList;
+        }
+    }
+	    
 	public double getWeight() {
 		return weight;
 	}

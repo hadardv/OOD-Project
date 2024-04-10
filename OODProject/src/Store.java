@@ -12,7 +12,6 @@ public class Store {
 	   private Stack<Command> stack = new Stack<>();
 	   private int profit;
 	   private static Store instance;
-	   private StoreMemento memento;
 
 	   
 
@@ -33,30 +32,42 @@ public class Store {
 	        return instance;
 	    }
 	
-	public void saveToMemento() {
-        this.memento = new StoreMemento(products, stack);
-        System.out.println("State saved!");
-    }
+	 public Memento createMemento() {
+	        for (Product product : products)
+	            product.createMemento();
+	        return new Memento(products, stack);
+	    }
 
+	    public void setMemento(Memento mem) {
+	        if (mem == null) {
+	            System.out.println("\nNo previous states.");
+	            return;
+	        }
+	        products = new LinkedHashSet<>(mem.getAllProducts());
+	        for (Product product : products) {
+	            product.setMemento(product.getMemento());
+	        }
+	        stack = new Stack<>();
+	        this.stack.addAll(mem.getStack());
+	    }
 
-    public StoreMemento getMemento() {
-        return memento;
-    }
+	    public static class Memento {
+	        private Set<Product> products = new LinkedHashSet<Product>();
+	        private Stack<Command> stack = new Stack<>();
 
-    public void restoreFromMemento(StoreMemento memento) {
-        if (memento == null) {
-            System.out.println("No previous states.");
-            return;
-        }
-        this.products = new TreeSet<>();
-        products.addAll(memento.getAllProducts());
-        for (Product product : products) {
-            product.restoreFromMomneto(product.getMemento());
-        }
-        this.stack = new Stack<>();
-        this.stack.addAll(memento.getStack());
-        System.out.println("State restored!");
-    }
+	        public Memento(Set<Product> products, Stack<Command> stack) {
+	            this.products = new LinkedHashSet<>(products);
+	            this.stack = new Stack<>();
+	        }
+
+	        public Set<Product> getAllProducts() {
+	            return products;
+	        }
+
+	        public Stack<Command> getStack() {
+	            return stack;
+	        }
+	    }
 
     public Stack<Command> getStack() {
         return stack;
@@ -88,7 +99,6 @@ public class Store {
 		Product productToRemove;
 		System.out.println(Main.store.toString());
 		System.out.println("Enter the product's ID that you want to delete:");
-		s.nextLine(); // Clear buffer
 		productIdToRemove=s.nextLine();
 		productToRemove = findProductById(productIdToRemove);
         return products.remove(productToRemove);
