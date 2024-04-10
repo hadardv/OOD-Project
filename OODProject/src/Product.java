@@ -104,7 +104,7 @@ public abstract class Product implements Comparable {
 		int sum = 0;
 		int profit;
 		for (Order order : ordersList) {
-			profit = order.getTotalPrice() - order.getTotalPrice(); // selling price - cost price = profit
+			profit = order.getTotalPrice() - order.getTotalCostPrice(); // selling price - cost price = profit
 			sum += profit;
 		}
 		this.profitAllOrders = sum;
