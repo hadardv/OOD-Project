@@ -102,12 +102,10 @@ public abstract class Product implements Comparable {
 	public int calcProfitOrders ()
 	{
 		int sum = 0;
-		int profit;
 		for (Order order : ordersList) {
-			profit = order.getTotalPrice() - order.getTotalCostPrice(); // selling price - cost price = profit
-			sum += profit;
+			sum += order.getProfitOrder();
 		}
-		this.profitAllOrders = sum;
+		profitAllOrders = sum;
 		return sum;
 	}
 	
@@ -116,12 +114,22 @@ public abstract class Product implements Comparable {
 		return "Product:" + ID + " name: " + product_name + ", cost price: " + cost_price + ", selling price: "
 				+ selling_price + ", stock:" + stock + ", Profit from product sales: " + profitAllOrders ;
 	}
-	
+	public String briefToString() {
+		return "Product:" + ID + " Name: " + product_name;
+	}
 	public void printOrders()
 	{
 		for (Order order : ordersList) {
-	        Order o = order;
-	        System.out.println(o.toString());
+			if(order.getProduct() instanceof SoldInStore) {
+				order.printForAccountant();
+				order.printForCustomer();
+			}
+			else if(order.getProduct() instanceof SoldToWholeSalers) {
+				order.printForAccountant();
+			}
+			else { // Sold In Website, No Invoice Format At All
+				order.briefToString();
+			}
 	    }
 	}
 	
@@ -155,6 +163,7 @@ public abstract class Product implements Comparable {
     
     public void addOrder(Order order) {
         ordersList.add(order);
+        profitAllOrders+=order.calcProfitOrder();
         order.getCmp().getCompany().sendOrderNotification(order);
     }
     
@@ -181,7 +190,7 @@ public abstract class Product implements Comparable {
     	}
     	while(!tempOrders.isEmpty()) {
     		Order o=tempOrders.pop();
-    		System.out.println("Due to unexpected circumstances order"+o.getID()+" has been canceled");
+    		System.out.println("Due to unexpected circumstances order"+o.getID()+" has been cancelled");
     		o.toString(); 
     		ordersList.remove(o);
     		int quantity=o.getQuantity();

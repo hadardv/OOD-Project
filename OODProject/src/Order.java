@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class Order {
+public class Order implements FormatForAccountant,FormatForCustomer {
 	private String orderID;
 	private int quantity;
 	private int totalPrice;
@@ -148,8 +148,8 @@ public class Order {
 	@Override
 	public String toString() {
 		StringBuffer str = new StringBuffer ();
-		str.append("\n\n\nOrder ID: " + orderID + " Quantity: " + quantity + " Total price: " + totalPrice
-					+ " \n" + customer + " \n" +product.toString() + "\nParcel weight: " +parcelWeight +
+		str.append("\n\nOrder ID: " + orderID + " Quantity: " + quantity + " Total price: " + totalPrice
+					+ " \n" + customer + " \n" +product.briefToString() + "\nParcel weight: " +parcelWeight +
 					" Profit from order: " + profitOrder + "\n\n");
 		if (product instanceof SoldThroughWebsite)
 		{
@@ -157,6 +157,26 @@ public class Order {
 		}
 		return str.toString();
 		
+	}
+	public String briefToString() {
+		StringBuffer str=new StringBuffer();
+		str.append("Order ID: " + orderID +"\n"+ product.briefToString()+ " Quantity: " + quantity + " Total price: " + totalPrice
+				+ " \n" + customer +"\nParcel weight: " +parcelWeight);
+		return str.toString();
+	}
+	public void printForAccountant() {
+		System.out.println("\nReciept For Accountant:");
+		System.out.println("---------------------");
+		System.out.println(this.briefToString());
+		int profit=getQuantity() * (product.getSelling_price() - product.getCost_price());
+		System.out.println("\nTotall Profit is: "+profit);		
+	}
+	public void printForCustomer() {
+		System.out.println("\nReciept For Customer:");
+		System.out.println("---------------------");
+		System.out.println(this.briefToString());
+		int tax=getQuantity() * ((product.getSelling_price()*17)/100);
+		System.out.println("\nTotal Tax Is: "+tax);		
 	}
 	
 

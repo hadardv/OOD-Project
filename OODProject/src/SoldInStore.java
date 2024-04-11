@@ -1,5 +1,5 @@
 
-public class SoldInStore extends Product implements FormatForAccountant,FormatForCustomer{
+public class SoldInStore extends Product{
 
 	public SoldInStore(String product_name, int cost_price, int selling_price, int stock,double weight,String ID) {
 		super(product_name, cost_price, selling_price, stock, weight, ID);

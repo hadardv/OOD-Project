@@ -164,7 +164,7 @@ public static void loadProducts() {
 	Main.store.addProduct(ProductFactoryClass.createProduct(ProductFactoryClass.eProductType.WHOLE_SALERS, "Philips Hue Smart Lightbulb", 45, 60, 100, 0.5,"106"));
 	Main.store.addProduct(ProductFactoryClass.createProduct(ProductFactoryClass.eProductType.WHOLE_SALERS, "Xiaomi Mi Smart Band 6", 35, 50, 150, 0.2,"107"));
 	Main.store.addProduct(ProductFactoryClass.createProduct(ProductFactoryClass.eProductType.WHOLE_SALERS, "Logitech MX Master 3 Mouse", 90, 120, 40, 0.8,"108"));
-	System.out.println(Main.store.toString());
+	
 }
 
 public static void loadOrdersAndCustomers() {

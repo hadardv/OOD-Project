@@ -101,12 +101,14 @@ public class Main {
 				System.out.println("Type product ID to preview:");
 				choiceId=s5.nextLine();
 				theProduct = store.findProductById(choiceId);
-				System.out.println(theProduct.toString());
+				System.out.println(theProduct.briefToString());
+				theProduct.printOrders();
 				break;
 				
 			// show the data of all the products in the store at the moment
 			case Q8:
 				System.out.println("The products in the store are: ");
+				store.calculaeProfit();
 				System.out.println(store.toString());
 				break;
 				
